@@ -1,17 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { StylesProvider } from "@material-ui/core/styles";
 
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import store from "./store";
 
 ReactDOM.render(
-    <StylesProvider injectFirst>
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>
-    </StylesProvider>,
+    <React.StrictMode>
+        <StylesProvider injectFirst>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </StylesProvider>
+    </React.StrictMode>,
     document.getElementById("root")
 );
 

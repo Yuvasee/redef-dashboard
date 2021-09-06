@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { Box } from "@material-ui/core";
 
+import Main from "./pages/Main";
 import Welcome from "./pages/Welcome";
+import { useAppSelector } from "./store";
+import { selectAddressIsValid } from "./store/selectors";
 
 const AppBox = styled(Box)`
     min-height: 100vh;
@@ -12,11 +15,9 @@ const AppBox = styled(Box)`
 `;
 
 function App() {
-    return (
-        <AppBox>
-            <Welcome />
-        </AppBox>
-    );
+    const hasValidAddress = useAppSelector(selectAddressIsValid);
+
+    return <AppBox>{hasValidAddress ? <Main /> : <Welcome />}</AppBox>;
 }
 
 export default App;
