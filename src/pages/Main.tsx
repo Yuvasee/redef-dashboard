@@ -9,10 +9,11 @@ import Approvals from "src/components/Approvals";
 const MainBox = styled(Box)`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
 `;
 
 const Section = styled(Box)`
+    display: flex;
     margin: 1em;
 `;
 

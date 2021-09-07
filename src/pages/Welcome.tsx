@@ -54,7 +54,7 @@ function Welcome() {
                     value={address}
                     onChange={handleChange}
                     error={showError}
-                    helperText={showError ? "Submitted value is not a valid Erhereum address" : " "}
+                    helperText={showError ? "Submitted value is not a valid Ethereum address" : " "}
                 />
                 <Start variant="contained" color="primary" type="submit">
                     Start
