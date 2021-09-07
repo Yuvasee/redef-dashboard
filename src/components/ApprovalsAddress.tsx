@@ -1,5 +1,6 @@
 import { Box } from "@material-ui/core";
 import styled from "styled-components";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 import { Address } from "src/elements/Address";
 import { useGetContractAbiQuery } from "src/store/etherscanApi";
@@ -10,6 +11,14 @@ type ApprovalsAddressProps = {
 
 const ApprovalsAddressBox = styled(Box)`
     display: flex;
+
+    & > svg {
+        color: #00c9a7;
+        width: 0.5em;
+        position: relative;
+        top: -0.1em;
+        margin-left: 0.3em;
+    }
 `;
 
 function ApprovalsAddress({ address }: ApprovalsAddressProps) {
@@ -18,7 +27,7 @@ function ApprovalsAddress({ address }: ApprovalsAddressProps) {
     return (
         <ApprovalsAddressBox>
             <Address address={address} />
-            {approved && " ✓"}
+            {approved && <CheckCircleIcon titleAccess="Contract code verified" />}
         </ApprovalsAddressBox>
     );
 }

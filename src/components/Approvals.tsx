@@ -6,20 +6,23 @@ import { useGetApprovalsQuery } from "src/store/bitqueryApi";
 import { selectAddress } from "src/store/selectors";
 import { SectionHeader } from "src/elements/SectionHeader";
 import ApprovalsAddress from "./ApprovalsAddress";
+import Loader from "src/elements/Loader";
 
 const ApprovalsBox = styled(Box)``;
 
 function Approvals() {
     const address = useAppSelector(selectAddress);
 
-    const { data: approvedAddresses, error, isLoading } = useGetApprovalsQuery(address);
+    const { data: approvedAddresses, isLoading } = useGetApprovalsQuery(address);
 
     return (
         <ApprovalsBox>
             <SectionHeader>Approved contracts</SectionHeader>
-            {approvedAddresses?.map((address) => (
-                <ApprovalsAddress address={address} />
-            ))}
+            {isLoading ? (
+                <Loader text="Loading approved contracts" />
+            ) : (
+                approvedAddresses?.map((address) => <ApprovalsAddress address={address} />)
+            )}
         </ApprovalsBox>
     );
 }

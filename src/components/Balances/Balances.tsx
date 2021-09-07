@@ -1,21 +1,12 @@
 import styled from "styled-components";
-import { Box, CircularProgress, Paper } from "@material-ui/core";
+import { Box, Paper } from "@material-ui/core";
 import { blueGrey } from "@material-ui/core/colors";
 
 import { SectionHeader } from "src/elements/SectionHeader";
 import { useBalances } from "./useBalances";
+import Loader from "src/elements/Loader";
 
 const BalancesBox = styled(Box)``;
-const Loader = styled(Box)`
-    width: 100%;
-    text-align: center;
-    padding: 4rem 0;
-    color: ${blueGrey[400]};
-    font-size: 90%;
-    svg {
-        color: ${blueGrey[200]};
-    }
-`;
 const Table = styled(Paper)``;
 const TableHeader = styled(Box)`
     font-weight: bold;
@@ -60,10 +51,7 @@ function Balances() {
                 </TableHeader>
 
                 {showLoader ? (
-                    <Loader>
-                        <CircularProgress />
-                        <div>Loading data&#8230;</div>
-                    </Loader>
+                    <Loader text="Loading token balances" />
                 ) : (
                     <TableBody {...getTableBodyProps()}>
                         {rows.map((row) => {
