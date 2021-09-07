@@ -4,8 +4,8 @@ import { Box } from "@material-ui/core";
 import { useAppSelector } from "src/store";
 import { useGetApprovalsQuery } from "src/store/bitqueryApi";
 import { selectAddress } from "src/store/selectors";
-import { Address } from "src/elements/Address";
 import { SectionHeader } from "src/elements/SectionHeader";
+import ApprovalsAddress from "./ApprovalsAddress";
 
 const ApprovalsBox = styled(Box)``;
 
@@ -18,7 +18,7 @@ function Approvals() {
         <ApprovalsBox>
             <SectionHeader>Approved contracts</SectionHeader>
             {approvedAddresses?.map((address) => (
-                <Address address={address} />
+                <ApprovalsAddress address={address} />
             ))}
         </ApprovalsBox>
     );

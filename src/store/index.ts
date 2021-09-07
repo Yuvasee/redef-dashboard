@@ -3,11 +3,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import addressReducer from "./addressSlice";
 import { bitqueryApi } from "./bitqueryApi";
+import { etherscanApi } from "./etherscanApi";
 
 const store = configureStore({
     reducer: {
         address: addressReducer,
         [bitqueryApi.reducerPath]: bitqueryApi.reducer,
+        [etherscanApi.reducerPath]: etherscanApi.reducer,
     },
 });
 

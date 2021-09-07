@@ -10,6 +10,9 @@ type GetApprovalsResponse = {
                     address: string;
                 };
             };
+            block: {
+                height: number;
+            };
         }[];
     };
 };
@@ -21,12 +24,15 @@ const getApprovalsQuery = (address: string) => ({
                 smartContractCalls(
                     caller: { is: "${address}" }
                     smartContractMethod: { is: "approve" }
-                    options: { limit: 10 }
+                    options: { desc: "block.height", limit: 10 }
                 ) {
                     smartContract {
                         address {
                             address
                         }
+                    }
+                    block {
+                        height
                     }
                 }
             }
