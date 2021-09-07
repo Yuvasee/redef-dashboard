@@ -19,7 +19,7 @@ const getApprovalsQuery = (address: string) => ({
         query MyQuery {
             ethereum(network: ethereum) {
                 smartContractCalls(
-                    caller: { is: ${address} }
+                    caller: { is: "${address}" }
                     smartContractMethod: { is: "approve" }
                     options: { limit: 10 }
                 ) {
