@@ -4,7 +4,9 @@ import { blueGrey } from "@material-ui/core/colors";
 
 import { useAppSelector } from "../store";
 import { selectAddress } from "../store/selectors";
-import { useGetBalancesQuery } from "../store/bitqueryApi";
+import { useGetBalancesQuery, useGetQuotesQuery } from "../store/bitqueryApi";
+import config from "src/config";
+import { toFixed } from "src/utils";
 
 const MainBox = styled(Box)`
     display: flex;
@@ -16,6 +18,7 @@ const Address = styled(Box)``;
 const Balances = styled(Box)``;
 const Balance = styled(Box)`
     display: flex;
+    align-items: center;
 `;
 const Name = styled(Box)``;
 
@@ -29,26 +32,56 @@ const Value = styled(Box)`
     text-align: right;
 `;
 
+const UsdtValue = styled(Box)`
+    flex-basis: 100px;
+    padding-left: 0.4rem;
+    font-size: 80%;
+`;
+
 function Main() {
     const address = useAppSelector(selectAddress);
-    const { data, error, isLoading } = useGetBalancesQuery(address);
-    const balances = data?.ethereum?.address[0]?.balances.filter((balance) => balance.value);
+
+    const {
+        data: balancesData,
+        error: balancesError,
+        isLoading: balancesIsLoading,
+    } = useGetBalancesQuery(address);
+    const balances = balancesData?.ethereum?.address[0]?.balances.filter(
+        (balance) => balance.value
+    );
+
+    const currencyAddresses =
+        balances?.map((balance) => {
+            const { address } = balance.currency;
+            return address === "-" ? config.wethAddress : address;
+        }) || [];
+    const {
+        data: quotesData,
+        error: quotesError,
+        isLoading: quotesIsLoading,
+    } = useGetQuotesQuery(currencyAddresses, { skip: !currencyAddresses.length });
+    const quotes = Object.values(quotesData?.ethereum || {}).map((element) => element[0]);
 
     return (
         <MainBox>
             <Address>Address: {address}</Address>
+
             {!!balances?.length && (
                 <Balances>
-                    {balances.map((balance) => {
+                    {balances.map((balance, i) => {
                         const {
                             value,
                             currency: { name, symbol },
                         } = balance;
+
                         return (
-                            <Balance>
+                            <Balance key={symbol}>
                                 <Name>{name}</Name>
                                 <Symbol>{symbol}</Symbol>
-                                <Value>{parseFloat(String(value)).toFixed(2)}</Value>
+                                <Value>{toFixed(value)}</Value>
+                                <UsdtValue>
+                                    {quotes[i] && `${toFixed(quotes[i].quotePrice * value)} USDT`}
+                                </UsdtValue>
                             </Balance>
                         );
                     })}
