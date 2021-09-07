@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+
 import addressReducer from "./addressSlice";
+import { bitqueryApi } from "./bitqueryApi";
 
 const store = configureStore({
     reducer: {
         address: addressReducer,
+        [bitqueryApi.reducerPath]: bitqueryApi.reducer,
     },
 });
 

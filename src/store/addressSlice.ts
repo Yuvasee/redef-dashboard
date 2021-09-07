@@ -22,6 +22,7 @@ const addressSlice = createSlice({
             state.isSubmitted = false;
         },
         submit(state) {
+            state.value = state.value.trim();
             state.isSubmitted = true;
             state.isValid = isAddress(state.value);
         },
