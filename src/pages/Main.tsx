@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Box } from "@material-ui/core";
 
-import { useAppSelector } from "../store";
-import { selectAddress } from "../store/selectors";
+import CurrentAddress from "src/components/CurrentAddress";
 import Balances from "src/components/Balances";
 import Approvals from "src/components/Approvals";
 
@@ -17,14 +16,12 @@ const Section = styled(Box)`
     margin: 1em;
 `;
 
-const Address = styled(Box)``;
-
 function Main() {
-    const address = useAppSelector(selectAddress);
-
     return (
         <MainBox>
-            <Address>Address: {address}</Address>
+            <Section>
+                <CurrentAddress />
+            </Section>
             <Section>
                 <Balances />
             </Section>

@@ -33,6 +33,9 @@ const TableRow = styled(Box)`
 `;
 const TableCell = styled(Box)`
     padding: 0.3rem 0.5rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 function Balances() {

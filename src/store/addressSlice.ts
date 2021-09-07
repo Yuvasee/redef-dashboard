@@ -26,8 +26,11 @@ const addressSlice = createSlice({
             state.isSubmitted = true;
             state.isValid = isAddress(state.value);
         },
+        clear() {
+            return initialState;
+        },
     },
 });
 
-export const { setValue, submit } = addressSlice.actions;
+export const { setValue, submit, clear } = addressSlice.actions;
 export default addressSlice.reducer;
