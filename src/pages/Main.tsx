@@ -5,8 +5,7 @@ import { blueGrey } from "@material-ui/core/colors";
 import { useAppSelector } from "../store";
 import { selectAddress } from "../store/selectors";
 import { useGetBalancesQuery, useGetQuotesQuery } from "../store/bitqueryApi";
-import config from "src/config";
-import { toFixed } from "src/utils";
+import { balancesToAddresses, toFixed } from "src/utils";
 
 const MainBox = styled(Box)`
     display: flex;
@@ -42,25 +41,18 @@ function Main() {
     const address = useAppSelector(selectAddress);
 
     const {
-        data: balancesData,
+        data: balances,
         error: balancesError,
         isLoading: balancesIsLoading,
     } = useGetBalancesQuery(address);
-    const balances = balancesData?.ethereum?.address[0]?.balances.filter(
-        (balance) => balance.value
-    );
 
-    const currencyAddresses =
-        balances?.map((balance) => {
-            const { address } = balance.currency;
-            return address === "-" ? config.wethAddress : address;
-        }) || [];
+    const currencyAddresses = balancesToAddresses(balances);
+
     const {
-        data: quotesData,
+        data: quotes,
         error: quotesError,
         isLoading: quotesIsLoading,
     } = useGetQuotesQuery(currencyAddresses, { skip: !currencyAddresses.length });
-    const quotes = Object.values(quotesData?.ethereum || {}).map((element) => element[0]);
 
     return (
         <MainBox>
@@ -80,7 +72,8 @@ function Main() {
                                 <Symbol>{symbol}</Symbol>
                                 <Value>{toFixed(value)}</Value>
                                 <UsdtValue>
-                                    {quotes[i] && `${toFixed(quotes[i].quotePrice * value)} USDT`}
+                                    {quotes?.[i] &&
+                                        `${toFixed(quotes[i]!.quotePrice * value)} USDT`}
                                 </UsdtValue>
                             </Balance>
                         );
