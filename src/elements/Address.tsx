@@ -37,14 +37,11 @@ const AddressBox = styled.div`
 `;
 
 const Begin = styled.span`
-    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
 `;
 
-const End = styled.span`
-    display: inline-block;
-`;
+const End = styled.span``;
 
 export function Address({ address }: AddressProps) {
     const begin = address.slice(0, address.length - 3);
