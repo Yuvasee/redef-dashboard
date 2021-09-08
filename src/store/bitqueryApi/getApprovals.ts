@@ -24,7 +24,7 @@ const getApprovalsQuery = (address: string) => ({
                 smartContractCalls(
                     caller: { is: "${address}" }
                     smartContractMethod: { is: "approve" }
-                    options: { desc: "block.height", limit: 10 }
+                    options: { desc: "block.height", limit: 30 }
                 ) {
                     smartContract {
                         address {
@@ -46,5 +46,6 @@ export const makeGetApprovalsEndpoint = (builder: EndpointBuilder<BaseQueryFn, n
         transformResponse: (response: GetApprovalsResponse) =>
             response?.ethereum?.smartContractCalls
                 ?.map((contractCall) => contractCall?.smartContract?.address?.address)
-                .filter(Boolean) || [],
+                .filter(Boolean)
+                .filter((v, i, array) => array.indexOf(v) === i) || [],
     });
