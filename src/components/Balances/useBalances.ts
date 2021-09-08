@@ -1,10 +1,13 @@
 import { useMemo } from "react";
-import { useTable, useFlexLayout } from "react-table";
+import { useTable, useFlexLayout, HeaderPropGetter, CellPropGetter } from "react-table";
 
 import { useAppSelector } from "src/store";
 import { selectAddress } from "src/store/selectors";
 import { useGetBalancesQuery, useGetQuotesQuery } from "src/store/bitqueryApi";
 import { balancesToAddresses, toFixed } from "src/utils";
+import { useSmWidth } from "src/styles/common";
+
+type BalancesTableData = Record<string, string | number | undefined>;
 
 export function useBalances() {
     const address = useAppSelector(selectAddress);
@@ -15,32 +18,39 @@ export function useBalances() {
         skip: !currencyAddresses.length,
     });
 
+    const smWidth = useSmWidth();
+
     const columns = useMemo(
         () => [
             {
                 accessor: "asset",
                 Header: "Asset",
             },
-            {
-                accessor: "price",
-                Header: "Price",
-                Cell: ({ value }: any) => (value ? `$${toFixed(value)}` : "-"),
-            },
-            {
-                accessor: "balance",
-                Header: "Balance",
-                Cell: ({ value }: any) => toFixed(value, 4),
-            },
+            ...(smWidth
+                ? []
+                : [
+                      {
+                          accessor: "price",
+                          Header: "Price",
+                          Cell: ({ value }: any) => (value ? `$${toFixed(value)}` : "-"),
+                      },
+                      {
+                          accessor: "balance",
+                          Header: "Balance",
+                          Cell: ({ value }: any) => toFixed(value, 4),
+                      },
+                  ]),
             {
                 accessor: "value",
                 Header: "Value",
                 Cell: ({ value }: any) => (value ? `$${toFixed(value, 0)}` : "-"),
+                width: 100,
             },
         ],
-        []
+        [smWidth]
     );
 
-    const data = useMemo<Record<string, string | number | undefined>[]>(() => {
+    const data = useMemo<BalancesTableData[]>(() => {
         if (!balances) return [];
         return balances
             .map((balance, i) => {
@@ -64,8 +74,23 @@ export function useBalances() {
 
     const tableInstance = useTable({ columns, data }, useFlexLayout);
 
+    const getStyles = (columnId: string) =>
+        columnId === "value" ? { justifyContent: "flex-end", display: "flex" } : {};
+
+    const headerProps: HeaderPropGetter<BalancesTableData> = (props, { column }) => [
+        props,
+        { style: getStyles(column.id) },
+    ];
+
+    const cellProps: CellPropGetter<BalancesTableData> = (props, { cell }) => [
+        props,
+        { style: getStyles(cell.column.id) },
+    ];
+
     return {
         showLoader: balancesIsLoading || quotesIsLoading,
+        headerProps,
+        cellProps,
         ...tableInstance,
     };
 }

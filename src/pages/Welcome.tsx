@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { TextField, Box, Button, Typography } from "@material-ui/core";
+import { TextField, Button, Typography } from "@material-ui/core";
 import { ChangeEventHandler, SyntheticEvent } from "react";
 
 import { useAppDispatch, useAppSelector } from "../store";
 import { setValue, submit } from "../store/addressSlice";
 import { selectAddress, selectAddressShowError } from "../store/selectors";
 
-const WelcomeBox = styled(Box)`
+const WelcomeBox = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,25 +42,23 @@ function Welcome() {
     console.log(address);
 
     return (
-        <form onSubmit={handleSubmit}>
-            <WelcomeBox>
-                <Header variant="h3">Enter an&nbsp;Ethereum address to&nbsp;explore…</Header>
-                <Input
-                    id="outlined-basic"
-                    label="Ethereum address"
-                    placeholder="0x…"
-                    variant="outlined"
-                    name="address"
-                    value={address}
-                    onChange={handleChange}
-                    error={showError}
-                    helperText={showError ? "Submitted value is not a valid Ethereum address" : " "}
-                />
-                <Start variant="contained" color="primary" type="submit">
-                    Start
-                </Start>
-            </WelcomeBox>
-        </form>
+        <WelcomeBox onSubmit={handleSubmit}>
+            <Header variant="h3">Enter an&nbsp;Ethereum address to&nbsp;explore…</Header>
+            <Input
+                id="outlined-basic"
+                label="Ethereum address"
+                placeholder="0x…"
+                variant="outlined"
+                name="address"
+                value={address}
+                onChange={handleChange}
+                error={showError}
+                helperText={showError ? "Submitted value is not a valid Ethereum address" : " "}
+            />
+            <Start variant="contained" color="primary" type="submit">
+                Start
+            </Start>
+        </WelcomeBox>
     );
 }
 

@@ -7,19 +7,49 @@ type AddressProps = {
 };
 
 const AddressBox = styled.div`
+    overflow: hidden;
+
     a {
-        display: inline-flex;
+        display: flex;
+        overflow: hidden;
+        white-space: nowrap;
         color: ${blueGrey[300]};
+        text-decoration: none;
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: 0.4em;
+            right: 0;
+            left: 0;
+            border-bottom: 1px solid ${blueGrey[300]};
+        }
+
         & > svg {
-            width: 0.6em;
-            margin-left: 0.2em;
+            font-size: 100%;
+            width: 0.8em;
+            margin-left: 0.3em;
             position: relative;
-            top: -0.1em;
+            top: 0.1em;
         }
     }
 `;
 
+const Begin = styled.span`
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+const End = styled.span`
+    display: inline-block;
+`;
+
 export function Address({ address }: AddressProps) {
+    const begin = address.slice(0, address.length - 3);
+    const end = address.slice(-3);
+
     return (
         <AddressBox>
             <a
@@ -28,7 +58,8 @@ export function Address({ address }: AddressProps) {
                 rel="noreferrer"
                 title="Inspect on EtherScan"
             >
-                {address}
+                <Begin>{begin}</Begin>
+                <End>{end}</End>
                 <OpenInNewIcon />
             </a>
         </AddressBox>

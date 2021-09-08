@@ -1,17 +1,23 @@
-import styled from "styled-components";
-import { Box } from "@material-ui/core";
+import styled, { css } from "styled-components";
+import { Container } from "@material-ui/core";
 
 import Main from "./pages/Main";
 import Welcome from "./pages/Welcome";
 import { useAppSelector } from "./store";
 import { selectAddressIsValid } from "./store/selectors";
+import { sm } from "src/styles/common";
 
-const AppBox = styled(Box)`
+const AppBox = styled(Container)`
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0 2rem 1rem;
+
+    ${sm(css`
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 140%;
+    `)}
 `;
 
 function App() {
